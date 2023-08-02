@@ -19,19 +19,18 @@ const client = new MongoClient(uri, {
 });
 async function run() {
   try {
-   
+    const couponCollection = client.db("klassy-missy").collection("coupons");
+
+    app.get("/coupons", async (req, res) => {
+      const cursor = couponCollection.find({});
+      const coupons = await cursor.toArray();
+
+      res.send(coupons);
+    });
   } finally {
-    
   }
 }
 run().catch(console.dir);
-
-
-
-
-
-
-
 
 app.get("/", (req, res) => {
   res.send("Hello Klassy Missy!");
