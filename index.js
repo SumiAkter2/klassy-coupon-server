@@ -22,20 +22,32 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     const couponCollection = client.db("klassy-missy").collection("coupons");
-
+    const userCollection = client.db("klassy-missy").collection("users");
+    //  create user
+    app.post("/user", async (req, res) => {
+      const users = req.body;
+      const result = await userCollection.insertOne(users);
+      res.send(result);
+    });
+    // get user
+    app.get("/user", async (req, res) => {
+      const users = await userCollection.find().toArray();
+      res.send(users);
+    });
+    // get coupons
     app.get("/coupons", async (req, res) => {
       const cursor = couponCollection.find({});
       const coupons = await cursor.toArray();
 
       res.send({ status: true, data: coupons });
     });
-
+    // insert coupons
     app.post("/coupons", async (req, res) => {
       const coupons = req.body;
       const result = await couponCollection.insertOne(coupons);
       res.send(result);
     });
-
+    // delete coupons
     app.delete("/coupons/:id", async (req, res) => {
       const id = req.params.id;
       const result = await couponCollection.deleteOne({ _id: ObjectId(id) });
