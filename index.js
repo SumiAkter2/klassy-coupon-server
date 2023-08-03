@@ -23,12 +23,12 @@ async function run() {
   try {
     const couponCollection = client.db("klassy-missy").collection("coupons");
     const userCollection = client.db("klassy-missy").collection("users");
+
     //  create user
-    app.post("/user", async (req, res) => {
-      const users = req.body;
-      const result = await userCollection.insertOne(users);
-      res.send(result);
-    });
+    const users = { email: "sumi@gamil.com", password: "123445" };
+    // const result = await userCollection.insertOne(users);
+    console.log(users);
+
     // get user
     app.get("/user", async (req, res) => {
       const users = await userCollection.find().toArray();
@@ -46,6 +46,23 @@ async function run() {
       const coupons = req.body;
       const result = await couponCollection.insertOne(coupons);
       res.send(result);
+    });
+
+    // update:
+    app.put("/coupon", async (req, res) => {
+      const coupons = req.body;
+      const filter = {};
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: coupons,
+      };
+      const result = await couponCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+
+      res.send({ result });
     });
     // delete coupons
     app.delete("/coupons/:id", async (req, res) => {
