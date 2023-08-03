@@ -61,7 +61,6 @@ async function run() {
         updateDoc,
         options
       );
-
       res.send({ result });
     });
     // delete coupons
