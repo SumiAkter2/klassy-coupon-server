@@ -27,19 +27,20 @@ async function run() {
       const cursor = couponCollection.find({});
       const coupons = await cursor.toArray();
 
-       res.send({ status: true, data: coupons });
+      res.send({ status: true, data: coupons });
     });
 
- app.post("/coupons", async (req, res) => {
-   const coupons = req.body;
-   const result = await couponCollection.insertOne(coupons);
-   res.send(result);
- });
+    app.post("/coupons", async (req, res) => {
+      const coupons = req.body;
+      const result = await couponCollection.insertOne(coupons);
+      res.send(result);
+    });
 
-
-
-
-
+    app.delete("/coupons/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await couponCollection.deleteOne({ _id: ObjectId(id) });
+      res.send(result);
+    });
   } finally {
   }
 }
