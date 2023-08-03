@@ -21,13 +21,14 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+    // collection
     const couponCollection = client.db("klassy-missy").collection("coupons");
     const userCollection = client.db("klassy-missy").collection("users");
 
     //  create user
     const users = { email: "sumi@gamil.com", password: "123445" };
-    // const result = await userCollection.insertOne(users);
-    console.log(users);
+    const result = await userCollection.insertOne(users);
+    console.log(users,result);
 
     // get user
     app.get("/user", async (req, res) => {
